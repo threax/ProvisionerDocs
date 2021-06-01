@@ -28,6 +28,10 @@
     {
       "name": "Handling Secrets",
       "link": "/handling-secrets"
+    },
+    {
+      "name": "Environments and Development",
+      "link": "/environments-and-development"
     }
   ]
 }
