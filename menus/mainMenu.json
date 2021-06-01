@@ -10,6 +10,10 @@
       "link": "/guiding-concepts"
     },
     {
+      "name": "Provisioner App Architecture",
+      "link": "/provisioner-app-architecture"
+    },
+    {
       "name": "Interacting with Other Applications",
       "link": "/interacting-with-other-applications"
     }
