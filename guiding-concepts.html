@@ -1,0 +1,82 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guiding Concepts</title>
+    <link rel="stylesheet" href="/ProvisionerDocs/lib/bootstrap/dist/css/bootstrap-darkly.css?linkver=20210601013612" type="text/css">
+
+</head>
+
+<body>
+
+    <nav class="navbar navbar-dark bg-dark" data-hr-run="edity.theme.layouts.default">
+        <button class="navbar-toggler" type="button" data-target="#sidebar" data-toggle="sidebar" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <a class="navbar-brand" href="/ProvisionerDocs/">Threax Provisioner</a>
+    </nav>
+
+    <div id="wrapper">
+        <!-- Sidebar -->
+        <div id="sidebar">
+            <div class="mainTreeMenu" data-hr-controller="treeMenu" data-hr-config-urlroot="/ProvisionerDocs/" data-hr-config-menu="/ProvisionerDocs/menus/mainMenu.json" data-hr-config-scrollelement="#sidebar-wrapper" data-hr-model-component="sidebarMenuComponent" data-hr-config-treemenu-version="AEB2589166B5AEA08E50455AC55B0DCF1ACD5B51D9220E83A1BB73D030016367">
+                <ul class="sidebarMenu" data-hr-model="childItems" data-hr-model-component="sidebarMenuComponent">
+                    <template data-hr-component="sidebarMenuComponent">
+                        <li class="folder">
+                            <div class="item" data-hr-on-click="toggleMenuItem" data-hr-toggle="current" data-hr-class-on="currentFolder"><span data-hr-toggle="children" class="glyphicon" data-hr-class-on="glyphicon-folder-open" data-hr-class-off="glyphicon-folder-close"></span> {{name}}</div>
+                            <div class="children" data-hr-model="children" data-hr-model-component="sidebarMenuComponent" data-hr-toggle="children" data-hr-class-on="expanded" data-hr-style-off="display:none;"></div>
+                        </li>
+                    </template>
+                    <template data-hr-variant="link">
+                        <li class="link">
+                            <a href="{{urlRoot}}{{link}}" target="{{target}}">
+                                <div class="mainBlock" data-hr-toggle="current" data-hr-class-on="currentLink">
+                                    {{name}}
+                                </div>
+                            </a>
+                        </li>
+                    </template>
+                    <template data-hr-variant="root">
+                        <div class="children" data-hr-model="children" data-hr-model-component="sidebarMenuComponent" data-hr-toggle="children" data-hr-class-on="expanded" data-hr-style-off="display:none;"></div>
+                    </template>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Page Content -->
+        <div id="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-12 pageContent">
+                        <h1>Guiding Concepts</h1>
+<p>First a few overall concepts must be laid out for how to handle the stack.</p>
+<h2>Exception Handling</h2>
+<p>I am a big believer in the concept that Exceptions are Exceptional. If you are using them to make decisions about what to do based on string error messages you probably have a timebomb waiting to go off. Personally I think they should largely go unhandled, be bubbled up all the way to main and returned by having the provisioner return a non-zero exit code. Let a higher level tool or operator identify the provisioner error and restart it, don&#39;t drive yourself crazy ensuring it can handle every edge case. A big exception to this rule would be any known trouble spots where a few retries could help. In that instance retry and then throw an exception if the process fails so many times.</p>
+<h2>Fail When There is a Failure</h2>
+<p>Try to fail quickly if something goes&nbsp; wrong. This can reduce log clutter since the app won&#39;t continue to run if something breaks. This means that if you are calling a script it should be checking exit codes to make sure the work was done correctly. When running processes from c# be sure to check the exit codes each time and throw an exception if they are unexpected.</p>
+<h2>Testing</h2>
+<p>Having the app broken up into testable components is really good. Unit tests are helpful, but really we are more interested in integration tests. This allows us to make sure all the parts are working or to easiliy troubleshoot an individaul issue. In addition the individual controllers can all be run independently to further isolate functions if we are having an issue or making changes.</p>
+<h2>Careful with Configuration</h2>
+<p>If you aren&#39;t careful you can end up with configuration in unintended places. For example if you have a script that calls the provisioner, but makes a little hack or change that script just became part of the configuration. We want configuration items to only exist inside the config files or the provisioner tool itself. This can be a subtile thing, but it can cause problems down the road if configuration becomes lost. This can probably only be managed with careful code reviews.</p>
+<h2>Do NOT Invent a Programming Language</h2>
+<p>It is very, very important to not invent a programming language inside the config. All logic and decision making should be inside actual code in a programming language. Use flags, enums or other configuration to drive these sorts of changes and handle them inside the provisioner itself. The little programming languages that crop up might seem cool, but they will cause you headaches as your code migrates into it more and more. Use things that provide the tooling you need.</p>
+                        <div class="footer"></div>
+                    </div>
+                </div>
+                <div class="footer-padding"></div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript" src="/ProvisionerDocs/lib/tslib.js?linkver=20210601013612"></script>
+<script type="text/javascript" src="/ProvisionerDocs/lib/jquery/dist/jquery.min.js?linkver=20210601013612"></script>
+<script type="text/javascript" src="/ProvisionerDocs/lib/popper.js/dist/popper.min.js?linkver=20210601013612"></script>
+<script type="text/javascript" src="/ProvisionerDocs/lib/bootstrap/dist/js/bootstrap.min.js?linkver=20210601013612"></script>
+<script type="text/javascript" src="/ProvisionerDocs/lib/tsbin.prod.js?linkver=20210601013612"></script>
+<script type="text/javascript" src="/ProvisionerDocs/lib/hr-run.js?linkver=20210601013612"></script>
+
+</body>
+
+</html>

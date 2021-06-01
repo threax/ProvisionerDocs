@@ -1,0 +1,74 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Provisioner App Architecture</title>
+    <link rel="stylesheet" href="/ProvisionerDocs/lib/bootstrap/dist/css/bootstrap-darkly.css?linkver=20210601013612" type="text/css">
+
+</head>
+
+<body>
+
+    <nav class="navbar navbar-dark bg-dark" data-hr-run="edity.theme.layouts.default">
+        <button class="navbar-toggler" type="button" data-target="#sidebar" data-toggle="sidebar" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <a class="navbar-brand" href="/ProvisionerDocs/">Threax Provisioner</a>
+    </nav>
+
+    <div id="wrapper">
+        <!-- Sidebar -->
+        <div id="sidebar">
+            <div class="mainTreeMenu" data-hr-controller="treeMenu" data-hr-config-urlroot="/ProvisionerDocs/" data-hr-config-menu="/ProvisionerDocs/menus/mainMenu.json" data-hr-config-scrollelement="#sidebar-wrapper" data-hr-model-component="sidebarMenuComponent" data-hr-config-treemenu-version="AEB2589166B5AEA08E50455AC55B0DCF1ACD5B51D9220E83A1BB73D030016367">
+                <ul class="sidebarMenu" data-hr-model="childItems" data-hr-model-component="sidebarMenuComponent">
+                    <template data-hr-component="sidebarMenuComponent">
+                        <li class="folder">
+                            <div class="item" data-hr-on-click="toggleMenuItem" data-hr-toggle="current" data-hr-class-on="currentFolder"><span data-hr-toggle="children" class="glyphicon" data-hr-class-on="glyphicon-folder-open" data-hr-class-off="glyphicon-folder-close"></span> {{name}}</div>
+                            <div class="children" data-hr-model="children" data-hr-model-component="sidebarMenuComponent" data-hr-toggle="children" data-hr-class-on="expanded" data-hr-style-off="display:none;"></div>
+                        </li>
+                    </template>
+                    <template data-hr-variant="link">
+                        <li class="link">
+                            <a href="{{urlRoot}}{{link}}" target="{{target}}">
+                                <div class="mainBlock" data-hr-toggle="current" data-hr-class-on="currentLink">
+                                    {{name}}
+                                </div>
+                            </a>
+                        </li>
+                    </template>
+                    <template data-hr-variant="root">
+                        <div class="children" data-hr-model="children" data-hr-model-component="sidebarMenuComponent" data-hr-toggle="children" data-hr-class-on="expanded" data-hr-style-off="display:none;"></div>
+                    </template>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Page Content -->
+        <div id="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-12 pageContent">
+                        <h1>Provisioner App Architecture</h1>
+<p>The provisioner app at its core is an app that given one or more config files will carry out a given command on those files in the order that is required.</p>
+<p>To implement this there are a bunch of controllers that do the work that is needed for each step. Create a VM, setup a databse, call another controller. Anything put into a controller can be called directly from the command line and controllers can be injected into other controllers to create combination commands. The developer can also make services that provide functionality that can be shared, but that cannot be accessed from the command line. Finally there are the classes that form the app configuration itself including the common shared environment settings and the per app resources and other identified settings.</p>
+<p>The .Net Core dependency injector is used to create and manage the controllers and services. The IDisposable pattern is used in some places to ensure that some tasks, such as opening firewall ports, are reversed before the program shuts down. If writable state is managed carefully async and await can be used to do work in parallel.</p>
+                        <div class="footer"></div>
+                    </div>
+                </div>
+                <div class="footer-padding"></div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript" src="/ProvisionerDocs/lib/tslib.js?linkver=20210601013612"></script>
+<script type="text/javascript" src="/ProvisionerDocs/lib/jquery/dist/jquery.min.js?linkver=20210601013612"></script>
+<script type="text/javascript" src="/ProvisionerDocs/lib/popper.js/dist/popper.min.js?linkver=20210601013612"></script>
+<script type="text/javascript" src="/ProvisionerDocs/lib/bootstrap/dist/js/bootstrap.min.js?linkver=20210601013612"></script>
+<script type="text/javascript" src="/ProvisionerDocs/lib/tsbin.prod.js?linkver=20210601013612"></script>
+<script type="text/javascript" src="/ProvisionerDocs/lib/hr-run.js?linkver=20210601013612"></script>
+
+</body>
+
+</html>
