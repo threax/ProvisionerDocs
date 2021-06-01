@@ -4,6 +4,14 @@
     {
       "name": "Main Page",
       "link": "/"
+    },
+    {
+      "name": "Guiding Concepts",
+      "link": "/guiding-concepts"
+    },
+    {
+      "name": "Interacting with Other Applications",
+      "link": "/interacting-with-other-applications"
     }
   ]
 }
