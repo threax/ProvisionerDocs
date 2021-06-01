@@ -24,6 +24,10 @@
     {
       "name": "Creating Controllers",
       "link": "/creating-controllers"
+    },
+    {
+      "name": "Handling Secrets",
+      "link": "/handling-secrets"
     }
   ]
 }
