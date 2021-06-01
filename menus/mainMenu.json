@@ -16,6 +16,10 @@
     {
       "name": "Interacting with Other Applications",
       "link": "/interacting-with-other-applications"
+    },
+    {
+      "name": "Creating Controllers",
+      "link": "/creating-controllers"
     }
   ]
 }
