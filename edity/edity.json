@@ -1,0 +1,37 @@
+{
+  "$schema": "https://www.threax.com/EdityMcEditface/edityschema.json",
+  "vars": {
+    "siteTitle": "Threax Provisioner"
+  },
+  "buildVars":{
+    "pathBase": "ProvisionerDocs"
+  },
+  "additionalContent": [ "AutoUploads" ],
+  "compilers": [
+    {
+      "type": "Html",
+      "extension": ".html"
+    }
+  ],
+  "preBuildTasks": [
+    {
+      "name": "GetPublishRepo",
+      "settings": {
+        "url": "https://github.com/threax/ProvisionerDocs.git"
+      }
+    }
+  ],
+  "postBuildTasks": [
+    {
+      "name": "PublishMenu",
+      "settings": {
+        "menuFile": "menus/mainMenu.json"
+      }
+    }
+  ],
+  "postPublishTasks": [
+    {
+      "name" : "PublishToGitRepo"
+    }
+  ]
+}
