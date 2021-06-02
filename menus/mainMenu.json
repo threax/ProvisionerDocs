@@ -26,12 +26,20 @@
       "link": "/creating-controllers"
     },
     {
+      "name": "Creating Services",
+      "link": "/creating-services"
+    },
+    {
       "name": "Handling Secrets",
       "link": "/handling-secrets"
     },
     {
       "name": "Environments and Development",
       "link": "/environments-and-development"
+    },
+    {
+      "name": "Parallelism and State",
+      "link": "/parallelism-and-state"
     }
   ]
 }
