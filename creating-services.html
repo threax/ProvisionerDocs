@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Provisioner App Architecture</title>
+    <title>Creating Services</title>
     <link rel="stylesheet" href="/ProvisionerDocs/lib/bootstrap/dist/css/bootstrap-darkly.css?linkver=20210602111715" type="text/css">
 
 </head>
@@ -51,10 +51,11 @@
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-md-12 pageContent">
-                        <h1>Provisioner App Architecture</h1>
-<p>The provisioner app at its core is an app that given one or more config files will carry out a given command on those files in the order that is required.</p>
-<p>To implement this there are a bunch of controllers that do the work that is needed for each step. Create a VM, setup a databse, call another controller. Anything put into a controller can be called directly from the command line and controllers can be injected into other controllers to create combination commands. The developer can also make services that provide functionality that can be shared, but that cannot be accessed from the command line. Finally there are the classes that form the app configuration itself including the common shared environment settings and the per app resources and other identified settings.</p>
-<p>The .Net Core dependency injector is used to create and manage the controllers and services. The IDisposable pattern is used in some places to ensure that some tasks, such as opening firewall ports, are reversed before the program shuts down. If writable state is managed carefully async and await can be used to do work in parallel.</p>
+                        <h1>Creating Services</h1>
+<p>Services and controllers may seem very similar. Indeed they mostly are except services can lookup and return values. This gives them more variation than controllers that can only provide a Run method with an optional Configuration argument. Ideally services are testable independently. Services can inject other services, but they should not inject controllers. We don&#39;t want to create dependencies back and forth. Services can consume other services or nothing and Controllers can consume other Controllers and Services.</p>
+<p>Otherwise the work these perform is pretty open ended. Create the service and its functions and make an interface to use for injection and mocking. The reference implementation has several services that take care of various common needs the controllers have.</p>
+<h2>Doing Work on Shutdown</h2>
+<p>A cool thing you can do with services is implement the IDisposable interface for them. Now, when the provisioning is complete or an error occurs and app shuts down the Dispose method will be called and your service can do cleanup. For example you could have a service that opens up firewalls. By implementing IDisposable you can close the firewalls when the app shuts down. This frees individual controllers from needing to handle closing things and leaves them open for future work during the run, which improves performance.</p>
                         <div class="footer"></div>
                     </div>
                 </div>
