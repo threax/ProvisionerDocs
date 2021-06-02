@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Parallelism and State</title>
-    <link rel="stylesheet" href="/ProvisionerDocs/lib/bootstrap/dist/css/bootstrap-darkly.css?linkver=20210602114142" type="text/css">
+    <link rel="stylesheet" href="/ProvisionerDocs/lib/bootstrap/dist/css/bootstrap-darkly.css?linkver=20210602114504" type="text/css">
 
 </head>
 
@@ -70,7 +70,7 @@
 	<br>&nbsp;&nbsp;&nbsp; );
 	<br>}</code></p>
 <p>Here the app vault will have to be created before we do the other steps. However, all the other steps, making the vm, creating the sql db etc are setup to run in parallel. There is still only one thread actually running these tasks so all the processing for each of these steps will happen on the main thread, but each point where they await could potentially give up processing time for something else. This is useful since a provisioner spends most of its time waiting on something else to complete and a great deal of things that are done can be done at the same time.</p>
-<h2>Controlling External App Parallelsim</h2>
+<h2>Controlling External App Parallelism</h2>
 <p>If you notice in the provisioner code there are no calls to Thread.Start or Task.Run, which are the only things that can make us actually give up our time slice. That is because it is happening inside the Threax.ProcessHelper library when you use the async functions to call external commands. If you don&#39;t use the async verisons the main provisioner thread will stop and wait for the external process to complete. This is very powerful if that external process is not safe to run multiple times at once. If you know a command is safe to call multiple times at once call the async version with await. If you know the command should only run one at a time use the non-async version, which will force the provisioner to stop all other processing until that task is complete. This slows it down, but sometimes you need the safety. Of course you have to ensure only one provisioner is running at a time, but that is a separate issue.</p>
                         <div class="footer"></div>
                     </div>
@@ -79,12 +79,12 @@
             </div>
         </div>
     </div>
-    <script type="text/javascript" src="/ProvisionerDocs/lib/tslib.js?linkver=20210602114142"></script>
-<script type="text/javascript" src="/ProvisionerDocs/lib/jquery/dist/jquery.min.js?linkver=20210602114142"></script>
-<script type="text/javascript" src="/ProvisionerDocs/lib/popper.js/dist/popper.min.js?linkver=20210602114142"></script>
-<script type="text/javascript" src="/ProvisionerDocs/lib/bootstrap/dist/js/bootstrap.min.js?linkver=20210602114142"></script>
-<script type="text/javascript" src="/ProvisionerDocs/lib/tsbin.prod.js?linkver=20210602114142"></script>
-<script type="text/javascript" src="/ProvisionerDocs/lib/hr-run.js?linkver=20210602114142"></script>
+    <script type="text/javascript" src="/ProvisionerDocs/lib/tslib.js?linkver=20210602114504"></script>
+<script type="text/javascript" src="/ProvisionerDocs/lib/jquery/dist/jquery.min.js?linkver=20210602114504"></script>
+<script type="text/javascript" src="/ProvisionerDocs/lib/popper.js/dist/popper.min.js?linkver=20210602114504"></script>
+<script type="text/javascript" src="/ProvisionerDocs/lib/bootstrap/dist/js/bootstrap.min.js?linkver=20210602114504"></script>
+<script type="text/javascript" src="/ProvisionerDocs/lib/tsbin.prod.js?linkver=20210602114504"></script>
+<script type="text/javascript" src="/ProvisionerDocs/lib/hr-run.js?linkver=20210602114504"></script>
 
 </body>
 
