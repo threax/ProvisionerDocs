@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Configuration</title>
-    <link rel="stylesheet" href="/ProvisionerDocs/lib/bootstrap/dist/css/bootstrap-darkly.css?linkver=20210602111715" type="text/css">
+    <link rel="stylesheet" href="/ProvisionerDocs/lib/bootstrap/dist/css/bootstrap-darkly.css?linkver=20210602114142" type="text/css">
 
 </head>
 
@@ -52,11 +52,11 @@
                 <div class="row">
                     <div class="col-md-12 pageContent">
                         <h1>Configuration</h1>
-<p>The configuration files provide the configuration that you need to change per app. Ideally they define the minimal amount possible, but with the way clouds are it can be impossible to use pure naming conventions. I like providing the bare minimum and then creating defaults for the user if they do not provide a specific value. This way we get the benefits of automatic values with the power to override where needed. Don&#39;t overthink this. Being able to add new config vaules and not needing to go define them in 1000 files is one of the things this method gives us.</p>
+<p>The configuration files provide the configuration that you need to change per app. Ideally they define the minimal amount possible, but with the way clouds are it can be impossible to use pure naming conventions. I like providing the bare minimum and then creating defaults for the user if they do not provide a specific value. This way we get the benefits of automatic values with the power to override where needed. Don&#39;t overthink this. Being able to add new config values and not needing to go define them in 1000 files is one of the things this method gives us.</p>
 <p>It is ok to use JSON or YAML depending on the preferences of the team. The reference implementation uses JSON extended to allow other files to be included and glued together to make a final config and comments are ok and will be ignored. This is all provided by the library Json.NET. Use something standard here with a library that easily loads the config into your target language. Supporting an include can reduce duplication, but you could achieve this with a split configuration as well. Remember that it is very important that you do not create a programming language here. The entire goal of this project is to move the code that would be added to a config into a proper environment.</p>
 <p>The <a href="https://github.com/threax/Threax.Provision.Azure/tree/master/Threax.AzureVmProvisioner/Example">reference implementation</a> arranges each app into a folder and has a shared env.json in the root directory. This way each app can share the environment config by including it and then adding the per app sections. A set of dependencies can be setup for each config that allows order to be enforced if needed. If more environments are needed use subfolders in each app, or add it to the config name.</p>
-<p>A full deploymenet can be done by calling <code>FullDeploy /app/Example /*/appsettings.json</code>. This will load each config file and do all the work to set it up.</p>
-<p>Ultimately what goes into the config file is up to your project. Typically I create an Environment Configuration that holds shared values needed by all apps in a given environment. Next comes the Resource Configuration that defines all the individual resources such as compute, sql servers, certificates and other resources the provisioner sets up. Finally you might have some custom shared configuration. For example the reference implementation taps into the build and deploy configs from <a href="https://github.com/threax/Threax.DockerTools.git">Threax.DockerTools</a> and the Azure configurations from <a href="https://github.com/threax/Threax.Azure.git">Threax.Azure</a>. When creating resources such as key vaults the provisioner can tap into the same configuration the app is already using by sharing these config libraries. This is very useful for the Threax apps, but might not be useful at all depending on your project.</p>
+<p>A full deployment can be done by calling <code>FullDeploy /app/Example /*/appsettings.json</code>. This will load each config file and do all the work to set it up.</p>
+<p>Ultimately what goes into the config file is up to your project. Typically I create an Environment Configuration that holds shared values needed by all apps in a given environment. Next comes the Resource Configuration that defines all the individual resources such as compute, SQL servers, certificates and other resources the provisioner sets up. Finally you might have some custom shared configuration. For example the reference implementation taps into the build and deploy configs from <a href="https://github.com/threax/Threax.DockerTools.git">Threax.DockerTools</a> and the Azure configurations from <a href="https://github.com/threax/Threax.Azure.git">Threax.Azure</a>. When creating resources such as key vaults the provisioner can tap into the same configuration the app is already using by sharing these config libraries. This is very useful for the Threax apps, but might not be useful at all depending on your project.</p>
                         <div class="footer"></div>
                     </div>
                 </div>
@@ -64,12 +64,12 @@
             </div>
         </div>
     </div>
-    <script type="text/javascript" src="/ProvisionerDocs/lib/tslib.js?linkver=20210602111715"></script>
-<script type="text/javascript" src="/ProvisionerDocs/lib/jquery/dist/jquery.min.js?linkver=20210602111715"></script>
-<script type="text/javascript" src="/ProvisionerDocs/lib/popper.js/dist/popper.min.js?linkver=20210602111715"></script>
-<script type="text/javascript" src="/ProvisionerDocs/lib/bootstrap/dist/js/bootstrap.min.js?linkver=20210602111715"></script>
-<script type="text/javascript" src="/ProvisionerDocs/lib/tsbin.prod.js?linkver=20210602111715"></script>
-<script type="text/javascript" src="/ProvisionerDocs/lib/hr-run.js?linkver=20210602111715"></script>
+    <script type="text/javascript" src="/ProvisionerDocs/lib/tslib.js?linkver=20210602114142"></script>
+<script type="text/javascript" src="/ProvisionerDocs/lib/jquery/dist/jquery.min.js?linkver=20210602114142"></script>
+<script type="text/javascript" src="/ProvisionerDocs/lib/popper.js/dist/popper.min.js?linkver=20210602114142"></script>
+<script type="text/javascript" src="/ProvisionerDocs/lib/bootstrap/dist/js/bootstrap.min.js?linkver=20210602114142"></script>
+<script type="text/javascript" src="/ProvisionerDocs/lib/tsbin.prod.js?linkver=20210602114142"></script>
+<script type="text/javascript" src="/ProvisionerDocs/lib/hr-run.js?linkver=20210602114142"></script>
 
 </body>
 

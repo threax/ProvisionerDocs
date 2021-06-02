@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Environments and Development</title>
-    <link rel="stylesheet" href="/ProvisionerDocs/lib/bootstrap/dist/css/bootstrap-darkly.css?linkver=20210602111715" type="text/css">
+    <link rel="stylesheet" href="/ProvisionerDocs/lib/bootstrap/dist/css/bootstrap-darkly.css?linkver=20210602114142" type="text/css">
 
 </head>
 
@@ -52,8 +52,8 @@
                 <div class="row">
                     <div class="col-md-12 pageContent">
                         <h1>Environments and Development</h1>
-<p>When creating an app most organizations will have a few different environments. Usually at least a dev / stage / prod setup of some kind. This works well and allows developers to test out their code as it moves between the various environments. The issue comes in with the fact that for DevOps all of these environments are production. I&#39;ve seen projects fail because DevOps has no place to work. New features are wanted and the Dev environment has to go down, which halts progress on the whole app. And since of course this it the first time anyone has tried these changes it might take a long time. Alternatively sometimes things are setup, repurposed and suddenly something temporary is prod and you have a maintainence nightmare.</p>
-<p>Instead DevOps needs to treat their environments the same way the development team does. For dev give each DevOps engineer their own cloud instance where they can create whatever they want however they want as they are capturing it into the provisoiner. Once this is complete and the code is merged test the changes against a volitale DevOps environment. This should look roughtly like Dev and deploy the latest service versions. It should also be recreated and destroyed as much as possible. Ideally nightly perhaps weekly to make sure the provisioner can still setup a sane environment from end to end. This is roughly equivalent to stage. Finally we have the actual programmer accessible dev / stage / prod, which is all prod for DevOps.</p>
+<p>When creating an app most organizations will have a few different environments. Usually at least a dev / stage / prod setup of some kind. This works well and allows developers to test out their code as it moves between the various environments. The issue comes in with the fact that for DevOps all of these environments are production. I&#39;ve seen projects fail because DevOps has no place to work. New features are wanted and the Dev environment has to go down, which halts progress on the whole app. And since of course this it the first time anyone has tried these changes it might take a long time. Alternatively sometimes things are setup, repurposed and suddenly something temporary is prod and you have a maintenance nightmare.</p>
+<p>Instead DevOps needs to treat their environments the same way the development team does. For dev give each DevOps engineer their own cloud instance where they can create whatever they want however they want as they are capturing it into the provisioner. Once this is complete and the code is merged test the changes against a volatile DevOps environment. This should look roughly like Dev and deploy the latest service versions. It should also be recreated and destroyed as much as possible. Ideally nightly perhaps weekly to make sure the provisioner can still setup a sane environment from end to end. This is roughly equivalent to stage. Finally we have the actual programmer accessible dev / stage / prod, which is all prod for DevOps.</p>
 <p>There are some other advantages of working like this. For example if a DevOps engineer does some crazy stuff in their personal environment, but does not capture it into the provisioner it will not flow out into the DevOps environment, which is only ever created by the provisioner. Another useful feature is testing upgrades. Using the provisioner I can setup and environment that matches something specific, like prod. Then I can use the latest provisioner to update that older version to make sure it works. You should be able to shake out quite a bit of issues if you rely on the automation and run it frequently.</p>
                         <div class="footer"></div>
                     </div>
@@ -62,12 +62,12 @@
             </div>
         </div>
     </div>
-    <script type="text/javascript" src="/ProvisionerDocs/lib/tslib.js?linkver=20210602111715"></script>
-<script type="text/javascript" src="/ProvisionerDocs/lib/jquery/dist/jquery.min.js?linkver=20210602111715"></script>
-<script type="text/javascript" src="/ProvisionerDocs/lib/popper.js/dist/popper.min.js?linkver=20210602111715"></script>
-<script type="text/javascript" src="/ProvisionerDocs/lib/bootstrap/dist/js/bootstrap.min.js?linkver=20210602111715"></script>
-<script type="text/javascript" src="/ProvisionerDocs/lib/tsbin.prod.js?linkver=20210602111715"></script>
-<script type="text/javascript" src="/ProvisionerDocs/lib/hr-run.js?linkver=20210602111715"></script>
+    <script type="text/javascript" src="/ProvisionerDocs/lib/tslib.js?linkver=20210602114142"></script>
+<script type="text/javascript" src="/ProvisionerDocs/lib/jquery/dist/jquery.min.js?linkver=20210602114142"></script>
+<script type="text/javascript" src="/ProvisionerDocs/lib/popper.js/dist/popper.min.js?linkver=20210602114142"></script>
+<script type="text/javascript" src="/ProvisionerDocs/lib/bootstrap/dist/js/bootstrap.min.js?linkver=20210602114142"></script>
+<script type="text/javascript" src="/ProvisionerDocs/lib/tsbin.prod.js?linkver=20210602114142"></script>
+<script type="text/javascript" src="/ProvisionerDocs/lib/hr-run.js?linkver=20210602114142"></script>
 
 </body>
 
