@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Configuration</title>
+    <title>Managing Dependencies</title>
     <link rel="stylesheet" href="/ProvisionerDocs/lib/bootstrap/dist/css/bootstrap-darkly.css?linkver=20210602120907" type="text/css">
 
 </head>
@@ -51,12 +51,20 @@
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-md-12 pageContent">
-                        <h1>Configuration</h1>
-<p>The configuration files provide the configuration that you need to change per app. Ideally they define the minimal amount possible, but with the way clouds are it can be impossible to use pure naming conventions. I like providing the bare minimum and then creating defaults for the user if they do not provide a specific value. This way we get the benefits of automatic values with the power to override where needed. Don&#39;t overthink this. Being able to add new config values and not needing to go define them in 1000 files is one of the things this method gives us.</p>
-<p>It is ok to use JSON or YAML depending on the preferences of the team. The reference implementation uses JSON extended to allow other files to be included and glued together to make a final config and comments are ok and will be ignored. This is all provided by the library Json.NET. Use something standard here with a library that easily loads the config into your target language. Supporting an include can reduce duplication, but you could achieve this with a split configuration as well. Remember that it is very important that you do not create a programming language here. The entire goal of this project is to move the code that would be added to a config into a proper environment.</p>
-<p>The <a href="https://github.com/threax/Threax.Provision.Azure/tree/master/Threax.AzureVmProvisioner/Example">reference implementation</a> arranges each app into a folder and has a shared env.json in the root directory. This way each app can share the environment config by including it and then adding the per app sections. A set of dependencies can be setup for each config that allows order to be enforced if needed. If more environments are needed use subfolders in each app, or add it to the config name.</p>
-<p>A full deployment can be done by calling <code>FullDeploy /app/Example /*/appsettings.json</code>. This will load each config file and do all the work to set it up.</p>
-<p>Ultimately what goes into the config file is up to your project. Typically I create an Environment Configuration that holds shared values needed by all apps in a given environment. Next comes the Resource Configuration that defines all the individual resources such as compute, SQL servers, certificates and other resources the provisioner sets up. Finally you might have some custom shared configuration. For example the reference implementation taps into the build and deploy configs from <a href="https://github.com/threax/Threax.DockerTools.git">Threax.DockerTools</a> and the Azure configurations from <a href="https://github.com/threax/Threax.Azure.git">Threax.Azure</a>. When creating resources such as key vaults the provisioner can tap into the same configuration the app is already using by sharing these config libraries. This is very useful for the Threax apps, but might not be useful at all depending on your project.</p>
+                        <h1>Managing Dependencies</h1>
+<p>Provisioners end up with interesting dependency requirements. While it generally isn&#39;t a big deal, you may need specific versions of not only things like NuGet packages, but also of entire command line tool suites, shell programs and possibly even more. There is one technology that can help manage all of this and provide a way to move it between machines: Docker (or other container tech).</p>
+<p>If you wrap your application up in a <a href="https://github.com/threax/Threax.Provision.Azure/blob/master/Threax.AzureVmProvisioner/Dockerfile">Dockerfile</a> you can control the host os environment and all the tool versions that are installed into it. By using a registry you can ensure that same environment can exist on any machine where you might need to run the provisioner. This could be other DevOps engineers, Application Developers, Architects or anyone that might have a need to spin up an environment. Provisioners can make the DevOps tasks available to a wide technical audience. Think of Docker as a package manager for everything and you can see how it helps out a huge amount with this type of work.</p>
+<h2>Visual Studio Support</h2>
+<p>Using Visual Studio with a Dockerfile works very well. If you look at the <a href="https://github.com/threax/Threax.Provision.Azure/blob/master/Threax.AzureVmProvisioner/Threax.AzureVmProvisioner.csproj">Provisioner&#39;s csproj</a> you will see some additional arguments provided to the run command:</p>
+<p><code>&lt;<span class="pl-ent">DockerfileRunArguments</span>&gt;-v /var/run/docker.sock:/var/run/docker.sock -v threax-provision-azurevm-home:/root -v threax-provision-azurevm-temp:/tmp&lt;/<span class="pl-ent">DockerfileRunArguments</span>&gt; </code></p>
+<p>This runs the provisioner with two volumes to cover the user folder and the tmp directory. This way we aren&#39;t writing the files it creates to the Docker filesystem. It also exposes the docker socket.</p>
+<p>When working on code your example deployment should be mounted in the container&#39;s /app directory. You can use this location as arguments when running the program with launchsettings.json. For example here is the full deploy command:</p>
+<p><code>&nbsp;&nbsp;&nbsp; &quot;Full Deploy&quot;: {
+	<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;commandName&quot;: &quot;Docker&quot;,
+	<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;commandLineArgs&quot;: &quot;FullDeploy /app/Example /*/appsettings.json&quot;
+	<br>&nbsp;&nbsp;&nbsp; },</code></p>
+<p>This uses the /app/Example folder as the root search folder since that is where those files are in the container due to how Visual Studio sets it up to run.</p>
+<p>Finally when adding dependencies to the container, do so in the base section of the Dockerfile. Notice how the <a href="https://github.com/threax/Threax.Provision.Azure/blob/master/Threax.AzureVmProvisioner/Dockerfile">reference implementation</a> does it.</p>
                         <div class="footer"></div>
                     </div>
                 </div>
