@@ -1,0 +1,14 @@
+<h1>Managing Dependencies</h1>
+<p>Provisioners end up with interesting dependency requirements. While it generally isn&#39;t a big deal, you may need specific versions of not only things like NuGet packages, but also of entire command line tool suites, shell programs and possibly even more. There is one technology that can help manage all of this and provide a way to move it between machines: Docker (or other container tech).</p>
+<p>If you wrap your application up in a <a href="https://github.com/threax/Threax.Provision.Azure/blob/master/Threax.AzureVmProvisioner/Dockerfile">Dockerfile</a> you can control the host os environment and all the tool versions that are installed into it. By using a registry you can ensure that same environment can exist on any machine where you might need to run the provisioner. This could be other DevOps engineers, Application Developers, Architects or anyone that might have a need to spin up an environment. Provisioners can make the DevOps tasks available to a wide technical audience. Think of Docker as a package manager for everything and you can see how it helps out a huge amount with this type of work.</p>
+<h2>Visual Studio Support</h2>
+<p>Using Visual Studio with a Dockerfile works very well. If you look at the <a href="https://github.com/threax/Threax.Provision.Azure/blob/master/Threax.AzureVmProvisioner/Threax.AzureVmProvisioner.csproj">Provisioner&#39;s csproj</a> you will see some additional arguments provided to the run command:</p>
+<p><code>&lt;<span class="pl-ent">DockerfileRunArguments</span>&gt;-v /var/run/docker.sock:/var/run/docker.sock -v threax-provision-azurevm-home:/root -v threax-provision-azurevm-temp:/tmp&lt;/<span class="pl-ent">DockerfileRunArguments</span>&gt; </code></p>
+<p>This runs the provisioner with two volumes to cover the user folder and the tmp directory. This way we aren&#39;t writing the files it creates to the Docker filesystem. It also exposes the docker socket.</p>
+<p>When working on code your example deployment should be mounted in the container&#39;s /app directory. You can use this location as arguments when running the program with launchsettings.json. For example here is the full deploy command:</p>
+<p><code>&nbsp;&nbsp;&nbsp; &quot;Full Deploy&quot;: {
+	<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;commandName&quot;: &quot;Docker&quot;,
+	<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;commandLineArgs&quot;: &quot;FullDeploy /app/Example /*/appsettings.json&quot;
+	<br />&nbsp;&nbsp;&nbsp; },</code></p>
+<p>This uses the /app/Example folder as the root search folder since that is where those files are in the container due to how Visual Studio sets it up to run.</p>
+<p>Finally when adding dependencies to the container, do so in the base section of the Dockerfile. Notice how the <a href="https://github.com/threax/Threax.Provision.Azure/blob/master/Threax.AzureVmProvisioner/Dockerfile">reference implementation</a> does it.</p>

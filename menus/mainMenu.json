@@ -40,6 +40,10 @@
     {
       "name": "Parallelism and State",
       "link": "/parallelism-and-state"
+    },
+    {
+      "name": "Managing Dependencies",
+      "link": "/managing-dependencies"
     }
   ]
 }
