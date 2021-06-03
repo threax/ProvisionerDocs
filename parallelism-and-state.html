@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Parallelism and State</title>
-    <link rel="stylesheet" href="/ProvisionerDocs/lib/bootstrap/dist/css/bootstrap-darkly.css?linkver=20210602120907" type="text/css">
+    <link rel="stylesheet" href="/ProvisionerDocs/lib/bootstrap/dist/css/bootstrap-darkly.css?linkver=20210603111926" type="text/css">
 
 </head>
 
@@ -52,6 +52,8 @@
                 <div class="row">
                     <div class="col-md-12 pageContent">
                         <h1>Parallelism and State</h1>
+<p>It is important to consider if parallelism is worth it. It makes everything more complicated and you will have random errors from time to time. With all of the moving pieces in these apps it will be impossible to solve every synchronization issue. However, it should be possible to isolate those issues to external to your own provisioner code. For example having an external command line tool fail a small amount of the time might be worth having to restart deployments if you can make the deployment 5x faster. Give yourself 5 retries and you should beat the serial system. I think performance is important because the more you can run the automation the more it can be shaken down. In a perfect world avoid starting threads yourself and give the things that do a configuration option that will force them to run in a serial way even if they should be async. This way you can always at least run in a mode that would prevent threading issues from being a problem. This could be automated by a higher level system to be the final retry before truly giving up.</p>
+<p>In short, parallel harder, avoid if unsure. Use if performance gives new capabilities. Allow yourself to turn it off.</p>
 <p>Ideally controllers and services are carefully written so they can be used from multiple threads simultaneously. This can make the code more complicated, but following a few rules should take care of the issues that crop up. Any dependencies that are needed should be added as read only and not modified, which the compiler will enforce. Any state that needs to be loaded externally can be put into a Lazy&lt;Task&lt;T&gt;&gt; that will do the common work an return it. For example the <a href="https://github.com/threax/Threax.Provision.Azure/blob/master/Threax.AzureVmProvisioner/Services/SshCredsManager.cs">SshCredentialManager</a> class in the reference implementation works this way. It loads the external info it needs in the Lazy and returns a task. This will only happen once and all other threads will get the task back directly from the lazy. If the work is completed the result is available right away. Otherwise the thread will block until the work is complete. Finally, if you can&#39;t fit your state into the lazy task pattern take advantage of .Net&#39;s SemaphoreSlim class. The <a href="https://github.com/threax/Threax.Provision.Azure/blob/master/Threax.AzureVmProvisioner/Controller/FullDeploy.cs">FullDeploy</a> controller shows how this works. Create a SemaphoreSlim that allows 1 item in. Next use WaitAsync and Release to get access to the semaphore, do the shared work and then release.</p>
 <h2>Gaining Parallelism</h2>
 <p>However, on their own these things will not add any parallel computation. To get this use the async and await keywords. All the controllers are already async tasks, which sets them up to await and main is an async main. What this will do is give us one primary thread that will run until it hits an await where the work is being done in another thread. It will then stop execution of the current task and if there are other tasks waiting it will start executing them. However, on its own just adding async and await everywhere won&#39;t really do much. You have to start running multiple things. Consider the Create controller:</p>
@@ -79,12 +81,12 @@
             </div>
         </div>
     </div>
-    <script type="text/javascript" src="/ProvisionerDocs/lib/tslib.js?linkver=20210602120907"></script>
-<script type="text/javascript" src="/ProvisionerDocs/lib/jquery/dist/jquery.min.js?linkver=20210602120907"></script>
-<script type="text/javascript" src="/ProvisionerDocs/lib/popper.js/dist/popper.min.js?linkver=20210602120907"></script>
-<script type="text/javascript" src="/ProvisionerDocs/lib/bootstrap/dist/js/bootstrap.min.js?linkver=20210602120907"></script>
-<script type="text/javascript" src="/ProvisionerDocs/lib/tsbin.prod.js?linkver=20210602120907"></script>
-<script type="text/javascript" src="/ProvisionerDocs/lib/hr-run.js?linkver=20210602120907"></script>
+    <script type="text/javascript" src="/ProvisionerDocs/lib/tslib.js?linkver=20210603111926"></script>
+<script type="text/javascript" src="/ProvisionerDocs/lib/jquery/dist/jquery.min.js?linkver=20210603111926"></script>
+<script type="text/javascript" src="/ProvisionerDocs/lib/popper.js/dist/popper.min.js?linkver=20210603111926"></script>
+<script type="text/javascript" src="/ProvisionerDocs/lib/bootstrap/dist/js/bootstrap.min.js?linkver=20210603111926"></script>
+<script type="text/javascript" src="/ProvisionerDocs/lib/tsbin.prod.js?linkver=20210603111926"></script>
+<script type="text/javascript" src="/ProvisionerDocs/lib/hr-run.js?linkver=20210603111926"></script>
 
 </body>
 
